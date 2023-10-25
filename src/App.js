@@ -6,23 +6,35 @@ import { Core } from '@quicknode/sdk';
 function App() {
 
   const [address, setAddress] = useState('')
-  // const [isValidAddress, setIsValidAddress] = useState(false)
+  const [isValidAddress, setIsValidAddress] = useState(false)
   const [core, setCore] = useState(null)
   const [tokens, setTokens] = useState([])
+  const [nativeTokenBalance, setNativeTokenBalance] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handlePaste = async () => {
+    setIsLoading(true)
+    
     const copiedText = await navigator.clipboard.readText();
     setAddress(copiedText)
 
     if(copiedText.length === 42){
-      const tokens = await core.client.qn_getWalletTokenBalance({
+      setIsValidAddress(true)
+      const response = await core.client.qn_getWalletTokenBalance({
         wallet: copiedText,
       })
 
-      console.log(tokens)
-      setTokens(tokens.result)
+      console.log(response.result)
+      setTokens(response.result)
+      setNativeTokenBalance(response.nativeTokenBalance)
       
     }
+    else{
+      setTokens([])
+      setIsValidAddress(false)
+    }
+
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -69,38 +81,58 @@ function App() {
           </button>
         </div>
 
-        <div className='shadow-lg w-full md:w-2/3 my-10 py-5 px-5 text-left text-gray-600 overflow-auto'>
-          <div className='p-3 md:p-5 rounded-lg shadow-inner w-full md:w-1/2 my-5'>
-            <h3 className='font-bold text-sm mdtext-lg'>
-              Available Balance: 50ETH
-            </h3>
-          </div>
-          <table className='table table-auto w-4/5 md:w-2/3 my-5 md:mx-5 shadow-inner text-sm border-none'>
-            <thead>
-              <tr>
-                <th className='px-5 py-4'>Name</th>
-                <th className='px-5 py-4'>Symbol</th>
-                <th className='px-5 py-4'>Balance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                tokens && tokens.map((token, id) => {
-                const balance = token.totalBalance/(10**token.decimals)
-                // console.log(token.totalBalance)
-                return <>
-                  <tr key={id} className='border-b-2 border-b-gray-200 shadow-inner'>
-                    <td className='px-5 py-4'>{token.name}</td>
-                    <td className='px-5 py-4'>{token.symbol}</td>
-                    <td className='px-5 py-4'>{balance.toLocaleString()}</td>
-                  </tr>
-                </>
-                }
-              )}
-              
-            </tbody>
-          </table>
-        </div>
+        { 
+          isValidAddress && (
+
+            isLoading ? (
+              <div className='w-full md:w-1/3 p-5 flex justify-center items-center my-10'>
+                <div className='w-[50pt] h-[50pt] rounded-full border-4 border-l-transparent animate-spin border-gray-300'>
+
+                </div>
+              </div>
+            ) :
+            
+            tokens.length > 0 ? (
+              <div className='shadow-lg w-full md:w-2/3 my-10 py-5 px-5 text-left text-gray-600 overflow-auto'>
+                <div className='p-3 md:p-5 rounded-lg shadow-inner w-full md:w-1/2 my-5'>
+                  <h3 className='font-bold text-sm mdtext-lg'>
+                    Available Balance: {Number(nativeTokenBalance).toLocaleString()} ETH
+                  </h3>
+                </div>
+                <table className='table table-auto w-4/5 md:w-2/3 my-5 md:mx-5 shadow-inner text-sm border-none'>
+                  <thead>
+                    <tr>
+                      <th className='px-5 py-4'>Name</th>
+                      <th className='px-5 py-4'>Symbol</th>
+                      <th className='px-5 py-4'>Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      tokens && tokens.map((token, id) => (
+                        <tr key={id} className='border-b-2 border-b-gray-200 shadow-inner'>
+                          <td className='px-5 py-4'>{token.name}</td>
+                          <td className='px-5 py-4'>{token.symbol}</td>
+                          <td className='px-5 py-4'>{(token.totalBalance/(10**token.decimals)).toLocaleString()}</td>
+                        </tr>
+                      )
+                    )}
+                    
+                  </tbody>
+                </table>
+              </div>
+            )
+            : (
+              <div className='shadow-lg w-full md:w-2/3 my-10 py-5 px-5 text-left text-gray-500 uppercase overflow-auto'>
+                <div className='p-3 md:p-5 rounded-lg w-full md:w-1/2 my-5'>
+                  <h3 className='font-bold text-sm'>
+                    No token avalable on this wallet
+                  </h3>
+                </div>
+              </div>
+            )
+          )
+        }
       </div>
     </div>
   );
