@@ -74,9 +74,9 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if(address.length === 42){
-      handleSearch();
-    }
+    // if(address.length === 42){
+    // }
+    handleSearch();
   }, [address])
   
   return (
