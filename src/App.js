@@ -83,7 +83,7 @@ function App() {
     <div className="App bg-gray-100 min-h-screen min-w-screen">
       <div className='w-full px-4 py-5 bg-gray-800 text-gray-50 text-center md:text-left'>
         <h3 className='font-bold text-2xl font-playpen'>
-            Check Tokens
+            Check Tokns
         </h3>
       </div>
       
@@ -94,7 +94,7 @@ function App() {
             type="text" 
             value={address} 
             onChange={e => setAddress(e.target.value)} 
-            className='border-2 border-gray-500 w-full px-3 py-4 rounded-l-lg text-xs italic bg-gray-100'
+            className='border-2 border-gray-800 w-full px-3 py-4 rounded-l-lg text-xs italic bg-gray-100'
             placeholder='Enter Wallet Address'
             // disabled
           />
@@ -103,7 +103,7 @@ function App() {
             address.length === 0 || address.length === 42 ? (
               <button 
                 type="button"
-                className='h-auto w-auto px-6 bg-gray-600 border-2 text-xs py-5 rounded-r-lg text-gray-50 font-bold'
+                className='h-auto w-auto px-6 bg-gray-800 border-2 text-xs py-5 rounded-r-lg text-gray-50 font-bold'
                 onClick={handlePaste}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="bi bi-copy font-bold" viewBox="0 0 16 16">
@@ -114,7 +114,7 @@ function App() {
             : (
               <button 
                 type="button"
-                className='h-auto w-auto px-6 bg-gray-600 border-2 text-xs py-5 rounded-r-lg text-gray-50 font-bold'
+                className='h-auto w-auto px-6 bg-gray-800 border-2 text-xs py-5 rounded-r-lg text-gray-50 font-bold'
                 onClick={handleSearch}
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
@@ -143,9 +143,9 @@ function App() {
                     Available Balance: {Number(nativeTokenBalance).toLocaleString()} ETH
                   </h3>
                 </div>
-                <table className='table table-auto w-4/5 md:w-2/3 my-5 md:mx-5 shadow-inner text-sm border-none'>
+                <table className='table table-auto w-4/5 md:w-2/3 my-5 md:mx-5 text-sm border-none'>
                   <thead>
-                    <tr>
+                    <tr className='border-b-gray-200 border-b-2'>
                       <th className='px-5 py-4'>Name</th>
                       <th className='px-5 py-4'>Symbol</th>
                       <th className='px-5 py-4'>Balance</th>
@@ -154,7 +154,7 @@ function App() {
                   <tbody>
                     {
                       tokens && tokens.map((token, id) => (
-                        <tr key={id} className='border-b-2 border-b-gray-200 shadow-inner'>
+                        <tr key={id} className='border-b-2 border-b-gray-200'>
                           <td className='px-5 py-4'>{token.name}</td>
                           <td className='px-5 py-4'>{token.symbol}</td>
                           <td className='px-5 py-4'>{(token.totalBalance/(10**token.decimals)).toLocaleString()}</td>
