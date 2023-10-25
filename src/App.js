@@ -37,6 +37,28 @@ function App() {
     setIsLoading(false)
   }
 
+  const handleSearch = async () => {
+    setIsLoading(true)
+    
+    if(address.length === 42){
+      setIsValidAddress(true)
+      const response = await core.client.qn_getWalletTokenBalance({
+        wallet: address,
+      })
+
+      console.log(response.result)
+      setTokens(response.result)
+      setNativeTokenBalance(response.nativeTokenBalance)
+      
+    }
+    else{
+      setTokens([])
+      setIsValidAddress(false)
+    }
+
+    setIsLoading(false)
+  }
+
   useEffect(() => {
     const quicknode_rpc_url = 'https://yolo-long-bridge.ethereum-sepolia.discover.quiknode.pro/59d8208336c5c501e6165aa40196daa3632b383e/'
     
@@ -68,25 +90,41 @@ function App() {
             onChange={e => setAddress(e.target.value)} 
             className='border-2 border-gray-500 w-full px-3 py-4 rounded-l-lg text-xs italic bg-gray-100'
             placeholder='Enter Wallet Address'
+            // disabled
           />
 
-          <button
-            type="button"
-            className='h-auto w-auto px-6 bg-gray-600 border-2 text-xs py-5 rounded-r-lg text-gray-50 font-bold'
-            onClick={handlePaste}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="bi bi-copy font-bold" viewBox="0 0 16 16">
-              <path fillRule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6ZM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2Z"/>
-            </svg>
-          </button>
+          {
+            address.length === 0 || address.length === 42 ? (
+              <button 
+                type="button"
+                className='h-auto w-auto px-6 bg-gray-600 border-2 text-xs py-5 rounded-r-lg text-gray-50 font-bold'
+                onClick={handlePaste}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="bi bi-copy font-bold" viewBox="0 0 16 16">
+                  <path fillRule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6ZM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2Z"/>
+                </svg>
+              </button>
+            )
+            : (
+              <button 
+                type="button"
+                className='h-auto w-auto px-6 bg-gray-600 border-2 text-xs py-5 rounded-r-lg text-gray-50 font-bold'
+                onClick={handleSearch}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+              </button>
+            )
+          }
         </div>
 
         { 
-          isValidAddress && (
+          isValidAddress ? (
 
             isLoading ? (
               <div className='w-full md:w-1/3 p-5 flex justify-center items-center my-10'>
-                <div className='w-[50pt] h-[50pt] rounded-full border-4 border-l-transparent animate-spin border-gray-300'>
+                <div className='w-[40pt] h-[40pt] rounded-full border-4 border-l-transparent animate-spin border-gray-300'>
 
                 </div>
               </div>
@@ -126,11 +164,19 @@ function App() {
               <div className='shadow-lg w-full md:w-2/3 my-10 py-5 px-5 text-left text-gray-500 uppercase overflow-auto'>
                 <div className='p-3 md:p-5 rounded-lg w-full md:w-1/2 my-5'>
                   <h3 className='font-bold text-sm'>
-                    No token avalable on this wallet
+                    No token available on this wallet
                   </h3>
                 </div>
               </div>
             )
+          ) : (
+            address !== '' && address.length !== 42 && <div className='shadow-lg w-full md:w-2/3 my-10 py-5 px-5 text-left text-gray-500 uppercase overflow-auto'>
+              <div className='p-3 md:p-5 rounded-lg w-full md:w-1/2 my-5'>
+                <h3 className='font-bold text-sm'>
+                  Invalid Wallet Address
+                </h3>
+              </div>
+            </div>
           )
         }
       </div>
