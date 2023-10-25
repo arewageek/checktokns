@@ -72,6 +72,12 @@ function App() {
     })
     setCore(coreInstance)
   }, [])
+
+  useEffect(() => {
+    if(address.length === 42){
+      handleSearch();
+    }
+  }, [address])
   
   return (
     <div className="App bg-gray-100 min-h-screen min-w-screen">
