@@ -225,21 +225,25 @@ function App() {
                     </thead>
                     <tbody>
                       {
-                        tokens && tokens.map((token, id) => (
-                          <tr key={id} className='border-b-2 border-b-gray-200 cursor-pointer' onClick={() => tokenHistory(token.address)}>
-                            <td className='px-5 py-4'>{token.name}</td>
-                            <td className='px-5 py-4'>{token.symbol}</td>
-                            <td className='px-5 py-4'>{(token.totalBalance/(10**token.decimals)).toLocaleString()}</td>
-                            <td className='px-5 py-4'>
-                              <button 
-                                className='bg-gray-700 rounded-md text-xs text-gray-50 p-2 font-bold'
-                              >
-                                Trxs
-                              </button>
-                            </td>
-                          </tr>
-                        )
-                      )}
+                        tokens && tokens.map((token, id) => {
+                          return (
+                            (tokens.name != '') && (
+                              <tr key={id} className='border-b-2 border-b-gray-200 cursor-pointer' onClick={() => tokenHistory(token.address)}>
+                                <td className='px-5 py-4'>{token.name}</td>
+                                <td className='px-5 py-4'>{token.symbol}</td>
+                                <td className='px-5 py-4'>{(token.totalBalance/(10**token.decimals)).toLocaleString()}</td>
+                                <td className='px-5 py-4'>
+                                  <button 
+                                    className='bg-gray-700 rounded-md text-xs text-gray-50 p-2 font-bold'
+                                  >
+                                    Trxs
+                                  </button>
+                                </td>
+                              </tr>
+                            )
+                          )
+                        })
+                      }
                       
                     </tbody>
                   </table>
@@ -276,7 +280,7 @@ function App() {
         
         {
           
-          tokenTransactions.length > 0 && (
+          tokenTransactions.length > 0 && !isLoading && (
 
             <div className='md:px-3 w-full md:w-3/5'>
               <div className='shadow-lg w-full md:my-10 py-5 md:px-5 text-left text-gray-600 overflow-auto'>
@@ -308,7 +312,7 @@ function App() {
                           <td className='px-5 py-4'>
                             <div className='flex items-center'>
                               {
-                                token.fromAddress == address ? (
+                                token.fromAddress.toLowerCase() === address.toLowerCase() ? (
                                   <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" className="bi bi-arrow-up-right text-red-600" viewBox="0 0 16 16">
                                     <path fillRule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z"/>
                                   </svg>
@@ -368,7 +372,7 @@ function App() {
         }
 
         {
-          nativeTokenTransactions.length > 0 && (
+          nativeTokenTransactions.length > 0 && isLoading && (
 
             <div className='md:px-3 w-full md:w-3/5'>
               <div className='shadow-lg w-full md:my-10 py-5 md:px-5 text-left text-gray-600 overflow-auto'>
@@ -394,7 +398,7 @@ function App() {
                           <td className='px-5 py-4'>
                             <div className='flex items-center'>
                               {
-                                token.fromAddress === address ? (
+                                token.fromAddress.toLowerCase() === address.toLowerCase() ? (
                                   <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" className="bi bi-arrow-up-right text-red-600" viewBox="0 0 16 16">
                                     <path fillRule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0v-6z"/>
                                   </svg>
