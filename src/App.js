@@ -321,29 +321,29 @@ function App() {
                             </div>
                           </td>
                           <td className='px-5 py-4'>
-                            <div className='flex items-center space-x-3'>
+                            <div className='flex items-center space-x-3 w-auto'>
                               <span>
-                                <img src={`https://robohash.org/${token.fromAddress}`} className='h-[15pt] w-[15pt] rounded-full bg-gray-50 shadow-md' />
+                                <img src={`https://robohash.org/${token.fromAddress}`} className='h-[15pt] w-[15pt] hidden md:block rounded-full bg-gray-50 shadow-md' />
                               </span>
                               <span>{token.fromAddress.slice(0,6)}...{token.fromAddress.slice(-5)}</span>
-                              <span className='bg-gray-700 text-gray-50 h-[18pt] w-[18pt] rounded-md flex justify-center items-center font-bold cursor-pointer'>
+                              <div className='bg-gray-700 text-gray-50 p-2 md:p-1 h-[25px] w-[25px] md:h-[25px] md:w-[25px] rounded-md flex justify-center items-center font-bold cursor-pointer'>
                                 <svg onClick={() => copyAddress(token.fromAddress)} xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" className="bi bi-copy" viewBox="0 0 16 16">
                                   <path fillRule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6ZM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2Z"/>
                                 </svg>
-                              </span>
+                              </div>
                             </div>
                           </td>
                           <td className='px-5 py-4'>
-                            <div className='flex items-center space-x-3'>
+                            <div className='flex items-center space-x-3 w-auto'>
                               <span>
-                                <img src={`https://robohash.org/${token.toAddress}`} className='h-[15pt] w-[15pt] rounded-full bg-gray-50 shadow-md' />
+                                <img src={`https://robohash.org/${token.toAddress}`} className='h-[15pt] w-[15pt] hidden md:block rounded-full bg-gray-50 shadow-md' />
                               </span>
                               <span>{token.toAddress.slice(0,6)}...{token.toAddress.slice(-5)}</span>
-                              <span className='bg-gray-700 text-gray-50 h-[18pt] w-[18pt] rounded-md flex justify-center items-center font-bold cursor-pointer'>
+                              <div className='bg-gray-700 text-gray-50 p-2 md:p-1 h-[25px] w-[25px] md:h-[25px] md:w-[25px] rounded-md flex justify-center items-center font-bold cursor-pointer'>
                                 <svg onClick={() => copyAddress(token.toAddress)} xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" className="bi bi-copy" viewBox="0 0 16 16">
                                   <path fillRule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2Zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6ZM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2Z"/>
                                 </svg>
-                              </span>
+                              </div>
                             </div>
                           </td>
                           <td className='px-5 py-4'>${`${tokenData.symbol} `} {((Number(token.decimalReceivedAmount) === 0 ? Number(token.decimalSentAmount) : Number(token.decimalReceivedAmount))).toLocaleString()}</td>
